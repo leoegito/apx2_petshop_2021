@@ -68,7 +68,6 @@ function createTable($conn){
 			echo 'Schema e tabelas criadas com sucesso.';
 		}
 		
-
 }
 
 ?>
