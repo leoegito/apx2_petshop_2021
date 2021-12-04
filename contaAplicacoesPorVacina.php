@@ -8,12 +8,14 @@ conta_aplicacoes_por_vacina($conn, $mes);
 function conta_aplicacoes_por_vacina($conn, $mes){
 
 	$ano = date("Y");
-	// $ano = format("Y");
-	//var_dump($ano);
+
 	$dataInicio = $ano .'-' .$mes . '-' .'01';
-	//var_dump($dataInicio);
+
+	//Verifica se o mês tem 30 ou 31 dias ou é fevereiro
 	if(($mes % 2) == 0){
+		//Fevereiro
 		if($mes == 2){
+			//Verifica se o ano é bissexto
 			if($ano % 4 == 0){
 				if($ano % 100 != 0){
 					$dataFim = $ano .'-' .$mes . '-' .'29';
@@ -38,7 +40,7 @@ function conta_aplicacoes_por_vacina($conn, $mes){
 
 	$stmt = $conn->prepare("
 
-		SELECT b.nome, count(a.Data_aplicação) as Quantidade FROM vacinação as a JOIN vacina as b WHERE a.Data_aplicação > :dataInicio AND a.Data_aplicação <= :dataFim AND a.Vacina_id = b.id;
+		SELECT b.Nome, count(a.Data_aplicação) as Quantidade FROM vacinação as a JOIN vacina as b WHERE a.Data_aplicação > :dataInicio AND a.Data_aplicação <= :dataFim AND a.Vacina_id = b.id GROUP BY b.id;
  
 
 	");
@@ -49,9 +51,8 @@ function conta_aplicacoes_por_vacina($conn, $mes){
 	]);
 
 	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	//$json = json_encode($results, JSON_PRETTY_PRINT);
-	//header('Content-type: application/json; charset=utf-8'); -> apenas no chrome
-	print_r($results);
+
+	print("<pre>" .print_r($results, true) ."</pre>");
 
 }
 

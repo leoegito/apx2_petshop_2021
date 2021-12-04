@@ -2,8 +2,8 @@
 //Q2
 $conn = new PDO('mysql:dbname=db_apx2;host=localhost','root','');
 $Pet_id = 1;
-$Veterinário_id = 1;
-$Vacina_id = 1;
+$Veterinário_id = 2;
+$Vacina_id = 2;
 
 insere_vacinacao($conn, $Pet_id, $Veterinário_id, $Vacina_id);
 
@@ -22,19 +22,14 @@ function insere_vacinacao($conn, $Pet_id, $Veterinário_id, $Vacina_id){
 	]);
 
 	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	var_dump($results);
 
 	if(!isset($results[0]) || count($results) == 0){
-		//logica
+
 		$stmt2 = $conn->prepare("
 
 			INSERT INTO `vacinação` (id, Data_aplicação, Pet_id, Veterinário_id, Vacina_id) VALUES (null, curdate(), :Pet_id, :Veterinario_id, :Vacina_id);
 
 		");
-
-		var_dump($Vacina_id);
-
-		var_dump($stmt2);
 
 		$stmt2->execute([
 			':Pet_id'=>$Pet_id,
